@@ -1,9 +1,6 @@
-"""
-Search helpers including a small pandas example for learning.
-
-pandas is NOT required for basic search — we use it to build tag statistics
-that are easy to read in a table (good practice for data folks learning backend).
-"""
+# =============================================================================
+# searches - tags, jobs Applied
+# =============================================================================
 
 from typing import List
 
