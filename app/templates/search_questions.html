@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Search Questions — {{ app_title }}{% endblock %}
+{% block content %}
+<h1>Search Interview Questions by Tags</h1>
+<p class="text-muted">Example tags: Python, SQL, Snowflake, dbt, Airflow</p>
+
+<form method="get" action="/questions/search" class="card card-body shadow-sm mb-4 col-lg-8">
+  <label class="form-label">Tags (comma-separated)</label>
+  <input name="tags" class="form-control" value="{{ tags }}" placeholder="Python, SQL">
+  <button type="submit" class="btn btn-primary mt-3">Search</button>
+</form>
+
+{% if tags %}
+<h2 class="h5">Results ({{ results|length }})</h2>
+{% if results|length == 0 %}
+<p class="text-muted">No questions found for those tags.</p>
+{% else %}
+<div class="list-group">
+  {% for row in results %}
+  <div class="list-group-item">
+    <p class="mb-1"><strong>{{ row.question }}</strong></p>
+    <p class="mb-1 text-muted">{{ row.notes or "No notes" }}</p>
+    <small>Tags: {{ row.tags }} · Interview ID: {{ row.interview_id }}</small>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

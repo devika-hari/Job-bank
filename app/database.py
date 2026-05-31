@@ -9,16 +9,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from app.config import DATABASE_URL
 
-# Echo =false - clean logs
+# Echo =false for clean logs
 engine = create_engine(DATABASE_URL, echo=False)
 
-# each API request should get its own session to avoid data leaks between requests, concurrency issues
+# each API request get its own session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Creates base class for ALL ORM models (tables are subclasses of Base)
+# Creates base class for ALL ORM models
 Base = declarative_base()
 
-#Provides a DB session to every API request.
+#Provides DB session to every API request
 def get_db():
     # Open session at start of request
     db = SessionLocal()

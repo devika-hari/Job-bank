@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Add Job — {{ app_title }}{% endblock %}
+{% block content %}
+<h1 class="mb-3">Add Job Application</h1>
+<p class="text-muted">Saved under the demo user in the <code>users</code> table (no login required in this version).</p>
+
+<form method="post" action="/jobs/add" enctype="multipart/form-data" class="card card-body shadow-sm">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Role *</label>
+      <input name="role" class="form-control" required placeholder="Data Engineer">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Company *</label>
+      <input name="company_name" class="form-control" required placeholder="Acme Corp">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Location</label>
+      <input name="location" class="form-control" placeholder="Remote / NYC">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Employment Type</label>
+      <select name="employment_type" class="form-select">
+        <option value="">— Select —</option>
+        <option>Full-time</option>
+        <option>Part-time</option>
+        <option>Contract</option>
+        <option>Internship</option>
+        <option>Temporary</option>
+        <option>Freelance</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Workplace Type</label>
+      <select name="workplace_type" class="form-select">
+        <option value="">— Select —</option>
+        <option>Remote</option>
+        <option>Hybrid</option>
+        <option>On-site</option>
+      </select>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Job Description</label>
+      <textarea name="job_description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Current Stage</label>
+      <select name="current_stage" class="form-select">
+        <option value="">— Select —</option>
+        <option>Applied</option>
+        <option>Recruiter Screen</option>
+        <option>Phone Screen</option>
+        <option>Technical Interview</option>
+        <option>Take-home Assignment</option>
+        <option>Onsite Interview</option>
+        <option>Final Round</option>
+        <option>Offer</option>
+        <option>Rejected</option>
+        <option>Withdrawn</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Application Status</label>
+      <select name="application_status" class="form-select">
+        <option>Applied</option>
+        <option>In Progress</option>
+        <option>Offer</option>
+        <option>Rejected</option>
+        <option>Withdrawn</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label">Rejection Reason</label>
+      <input name="rejection_reason" class="form-control" placeholder="Only if rejected">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Recruiter Name</label>
+      <input name="recruiter_name" class="form-control">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Recruiter Email</label>
+      <input name="recruiter_email" type="email" class="form-control">
+    </div>
+    <div class="col-12">
+      <label class="form-label">Comments</label>
+      <textarea name="comments" class="form-control" rows="2"></textarea>
+    </div>
+    <div class="col-12">
+      <label class="form-label">Additional attachments</label>
+      <input
+        type="file"
+        name="additional_attachments"
+        class="form-control"
+        multiple
+        accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
+      >
+      <div class="form-text">Upload resume, cover letter, or notes (PDF, Word, text, images — max 5 MB each).</div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary mt-3">Save Job</button>
+</form>
+{% endblock %}

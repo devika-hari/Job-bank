@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Jobs — {{ app_title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+  <h1 class="mb-0">Job Applications</h1>
+  <a href="/jobs/add" class="btn btn-primary">+ Add Job</a>
+</div>
+
+<!-- Search by company name and/or role (same logic as GET /api/search/jobs) -->
+<div class="card card-body shadow-sm mb-4">
+  <h2 class="h6 text-muted mb-3">Search jobs</h2>
+  <form method="get" action="/jobs" class="row g-3 align-items-end">
+    <div class="col-md-5">
+      <label class="form-label">Company name</label>
+      <input name="company" class="form-control" value="{{ company }}" placeholder="e.g. Acme">
+    </div>
+    <div class="col-md-5">
+      <label class="form-label">Role</label>
+      <input name="role" class="form-control" value="{{ role }}" placeholder="e.g. Data Engineer">
+    </div>
+    <div class="col-md-2 d-flex gap-2">
+      <button type="submit" class="btn btn-primary flex-grow-1">Search</button>
+      <a href="/jobs" class="btn btn-outline-secondary" title="Clear search">Clear</a>
+    </div>
+  </form>
+  <p class="small text-muted mb-0 mt-2">Partial matches are supported. Leave both empty and click Search to list all jobs.</p>
+</div>
+
+{% if error %}
+<div class="alert alert-warning">{{ error }}</div>
+{% endif %}
+
+{% if is_search %}
+<p class="text-muted">Showing {{ jobs|length }} result(s) for
+  {% if company %}company <strong>{{ company }}</strong>{% endif %}
+  {% if company and role %} and {% endif %}
+  {% if role %}role <strong>{{ role }}</strong>{% endif %}
+</p>
+{% endif %}
+
+{% if jobs|length == 0 %}
+<p class="text-muted">No jobs found. <a href="/jobs/add">Add a new application</a> or try different search terms.</p>
+{% else %}
+<div class="table-responsive card shadow-sm">
+  <table class="table table-hover mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Role</th>
+        <th>Company</th>
+        <th>Status</th>
+        <th>Stage</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job in jobs %}
+      <tr>
+        <td>{{ job.role }}</td>
+        <td>{{ job.company_name }}</td>
+        <td><span class="badge bg-secondary">{{ job.application_status }}</span></td>
+        <td>{{ job.current_stage or "—" }}</td>
+        <td><a href="/jobs/{{ job.id }}">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

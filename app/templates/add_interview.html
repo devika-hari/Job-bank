@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Add Interview — {{ app_title }}{% endblock %}
+{% block content %}
+<h1>Add Interview Round</h1>
+<p class="text-muted">For <strong>{{ job.role }}</strong> at {{ job.company_name }}</p>
+
+<form method="post" action="/jobs/{{ job.id }}/interviews/add" class="col-lg-10">
+  <div class="card card-body shadow-sm mb-4">
+    <h2 class="h5 mb-3">Interview details</h2>
+    <div class="mb-3">
+      <label class="form-label">Round Number</label>
+      <input type="number" name="round_number" class="form-control" value="1" min="1" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Interview Date</label>
+      <input type="date" name="interview_date" class="form-control" value="{{ today }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Interviewer Names</label>
+      <input name="interviewer_names" class="form-control" placeholder="Jane Doe, John Smith">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Round Status</label>
+      <select name="round_status" class="form-select">
+        <option>Scheduled</option>
+        <option>Completed</option>
+        <option>Cancelled</option>
+        <option>Passed</option>
+        <option>Failed</option>
+      </select>
+    </div>
+    <div class="mb-0">
+      <label class="form-label">Comments</label>
+      <textarea name="comments" class="form-control" rows="2"></textarea>
+    </div>
+  </div>
+
+  <div class="card card-body shadow-sm mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h5 mb-0">Interview questions <span class="text-muted fw-normal">(optional)</span></h2>
+      <button type="button" class="btn btn-sm btn-outline-primary" id="add-question-btn">+ Add question</button>
+    </div>
+    <p class="text-muted small">Add as many questions as you like. Tags help you search later (e.g. Python, SQL, dbt).</p>
+
+    <div id="questions-container">
+      <div class="question-row border rounded p-3 mb-3 bg-white">
+        <div class="mb-2">
+          <label class="form-label">Question</label>
+          <textarea name="question_text" class="form-control" rows="2" placeholder="What is a CTE?"></textarea>
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Notes</label>
+          <textarea name="question_notes" class="form-control" rows="1" placeholder="Your answer / hints"></textarea>
+        </div>
+        <div class="mb-0">
+          <label class="form-label">Tags</label>
+          <input name="question_tags" class="form-control" placeholder="Python, SQL, Snowflake">
+          <div class="form-text">Comma-separated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save interview &amp; questions</button>
+  <a href="/jobs/{{ job.id }}" class="btn btn-link">Cancel</a>
+</form>
+
+<template id="question-row-template">
+  <div class="question-row border rounded p-3 mb-3 bg-white">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <span class="badge text-bg-light">Question</span>
+      <button type="button" class="btn btn-sm btn-outline-danger remove-question-btn">Remove</button>
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Question</label>
+      <textarea name="question_text" class="form-control" rows="2"></textarea>
+    </div>
+    <div class="mb-2">
+      <label class="form-label">Notes</label>
+      <textarea name="question_notes" class="form-control" rows="1"></textarea>
+    </div>
+    <div class="mb-0">
+      <label class="form-label">Tags</label>
+      <input name="question_tags" class="form-control" placeholder="Python, SQL">
+    </div>
+  </div>
+</template>
+
+<script>
+  (function () {
+    const container = document.getElementById("questions-container");
+    const template = document.getElementById("question-row-template");
+
+    document.getElementById("add-question-btn").addEventListener("click", function () {
+      const clone = template.content.cloneNode(true);
+      container.appendChild(clone);
+    });
+
+    container.addEventListener("click", function (e) {
+      if (e.target.classList.contains("remove-question-btn")) {
+        const rows = container.querySelectorAll(".question-row");
+        if (rows.length > 1) {
+          e.target.closest(".question-row").remove();
+        }
+      }
+    });
+  })();
+</script>
+{% endblock %}
