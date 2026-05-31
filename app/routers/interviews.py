@@ -51,7 +51,7 @@ def get_interview(interview_id: int, db: Session = Depends(get_db)):
     return interview
 
 
-@router.put("/interviews/{interview_id}", response_model=InterviewResponse, summary="Update interview")
+@router.patch("/interviews/{interview_id}", response_model=InterviewResponse, summary="Update interview")
 def update_interview(interview_id: int, payload: InterviewUpdate, db: Session = Depends(get_db)):
     interview = interview_service.get_interview_or_none(db, interview_id)
     if not interview:

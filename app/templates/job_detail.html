@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}{{ job.role }} — {{ app_title }}{% endblock %}
+{% block content %}
+<a href="/jobs" class="text-decoration-none">&larr; Back to jobs</a>
+<h1 class="mt-2">{{ job.role }} @ {{ job.company_name }}</h1>
+<p class="text-muted">
+  {{ job.location or "Location not set" }} · {{ job.workplace_type or "—" }} · {{ job.employment_type or "—" }}
+  {% if job.user %}
+  <br><small>Tracked by: {{ job.user.name }} ({{ job.user.email }})</small>
+  {% endif %}
+</p>
+
+<div class="row g-3">
+  <div class="col-md-8">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header">Application Details</div>
+      <div class="card-body">
+        <p><strong>Status:</strong> {{ job.application_status }}</p>
+        <p><strong>Stage:</strong> {{ job.current_stage or "—" }}</p>
+        {% if job.rejection_reason %}
+        <p><strong>Rejection reason:</strong> {{ job.rejection_reason }}</p>
+        {% endif %}
+        <p><strong>Recruiter:</strong> {{ job.recruiter_name or "—" }} {% if job.recruiter_email %}({{ job.recruiter_email }}){% endif %}</p>
+        <p><strong>Description:</strong><br>{{ job.job_description or "—" }}</p>
+        <p><strong>Comments:</strong><br>{{ job.comments or "—" }}</p>
+        <p><strong>Additional attachments:</strong></p>
+        {% if attachments|length == 0 %}
+        <p class="text-muted mb-0">None</p>
+        {% else %}
+        <ul class="mb-0">
+          {% for file in attachments %}
+          <li>
+            {% if file.url %}
+            <a href="{{ file.url }}" target="_blank" rel="noopener">{{ file.original_name }}</a>
+            {% else %}
+            {{ file.original_name or file.note }}
+            {% endif %}
+            {% if file.uploaded_at %}<small class="text-muted"> — {{ file.uploaded_at }}</small>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="h5">Interview rounds</h2>
+    {% for interview in job.interviews %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <span>
+          <strong>Round {{ interview.round_number }}</strong> — {{ interview.round_status }}
+          <small class="text-muted ms-1">{{ interview.interview_date or "Date TBD" }}</small>
+        </span>
+        <a class="btn btn-sm btn-outline-primary" href="/jobs/{{ job.id }}/interviews/{{ interview.id }}/questions/add">
+          + Add questions
+        </a>
+      </div>
+      <div class="card-body">
+        <p class="small text-muted mb-2">
+          Interviewers: {{ interview.interviewer_names or "—" }}
+          {% if interview.comments %} · {{ interview.comments }}{% endif %}
+        </p>
+
+        {% if interview.questions|length == 0 %}
+        <p class="text-muted small mb-0">No questions recorded for this round yet.</p>
+        {% else %}
+        <ul class="list-group list-group-flush">
+          {% for q in interview.questions %}
+          <li class="list-group-item px-0">
+            <p class="mb-1"><strong>{{ q.question_text }}</strong></p>
+            {% if q.notes %}
+            <p class="mb-1 small text-muted">{{ q.notes }}</p>
+            {% endif %}
+            {% if q.tags|length > 0 %}
+            <p class="mb-0">
+              {% for tag in q.tags %}
+              <span class="badge bg-info text-dark">{{ tag.name }}</span>
+              {% endfor %}
+            </p>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+    </div>
+    {% else %}
+    <p class="text-muted">No interviews yet. <a href="/jobs/{{ job.id }}/interviews/add">Add interview round</a></p>
+    {% endfor %}
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Quick actions</span>
+      </div>
+      <div class="list-group list-group-flush">
+        <a href="/jobs/{{ job.id }}/interviews/add" class="list-group-item list-group-item-action">+ Add interview round</a>
+        <a href="/questions/search" class="list-group-item list-group-item-action">Search questions by tag</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
