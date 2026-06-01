@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{base_url}}/api/search/questions/by-tags?tags_csv=Python,SQL"
+method: GET
+queryParams:
+  tags_csv: Python,SQL
+order: 4000

@@ -1,0 +1,7 @@
+$kind: http-request
+name: Recruiters by Company
+url: "{{base_url}}/api/search/recruiters/by-company?company=ABC"
+method: GET
+queryParams:
+  company: ABC
+order: 3000

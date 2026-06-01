@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Job Bank",
+    "description": "Postman collection for the Job Bank FastAPI backend. Set {{base_url}} to http://127.0.0.1:8000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000" },
+    { "key": "job_id", "value": "1" },
+    { "key": "interview_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{base_url}}/health" }
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "List Jobs",
+          "request": { "method": "GET", "url": "{{base_url}}/api/jobs" }
+        },
+        {
+          "name": "Create Job",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Data Engineer\",\n  \"company_name\": \"ABCZ Corp\",\n  \"application_status\": \"Applied\",\n  \"recruiter_name\": \"Jordan\",\n  \"recruiter_email\": \"jordan@abcz.com\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs"
+          }
+        },
+        {
+          "name": "Get Job",
+          "request": { "method": "GET", "url": "{{base_url}}/api/jobs/{{job_id}}" }
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"application_status\": \"Rejected\",\n  \"rejection_reason\": \"Position filled internally\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/{{job_id}}"
+          }
+        },
+        {
+          "name": "Delete Job",
+          "request": { "method": "DELETE", "url": "{{base_url}}/api/jobs/{{job_id}}" }
+        }
+      ]
+    },
+    {
+      "name": "Interviews",
+      "item": [
+        {
+          "name": "List Interviews for Job",
+          "request": { "method": "GET", "url": "{{base_url}}/api/jobs/{{job_id}}/interviews" }
+        },
+        {
+          "name": "Create Interview",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"round_number\": 1,\n  \"round_status\": \"Scheduled\",\n  \"interviewer_names\": \"Alex Lee\"\n}"
+            },
+            "url": "{{base_url}}/api/jobs/{{job_id}}/interviews"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "Create Question with Tags",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question_text\": \"Explain idempotent Airflow tasks\",\n  \"notes\": \"Mention retries\",\n  \"tags\": [\"Airflow\", \"Python\"]\n}"
+            },
+            "url": "{{base_url}}/api/interviews/{{interview_id}}/questions"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Jobs by Company",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/search/jobs/by-company?company=ABC"
+          }
+        },
+        {
+          "name": "Jobs by Role",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/search/jobs/by-role?role=Engineer"
+          }
+        },
+        {
+          "name": "Recruiters by Company",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/search/recruiters/by-company?company=ABC"
+          }
+        },
+        {
+          "name": "Questions by Tags",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/search/questions/by-tags?tags_csv=Python,SQL"
+          }
+        },
+        {
+          "name": "Tag Stats (pandas)",
+          "request": { "method": "GET", "url": "{{base_url}}/api/search/tags/stats" }
+        }
+      ]
+    }
+  ]
+}

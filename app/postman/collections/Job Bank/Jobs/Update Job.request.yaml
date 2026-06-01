@@ -1,0 +1,14 @@
+$kind: http-request
+name: Update Job
+url: "{{base_url}}/api/jobs/{{job_id}}"
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "application_status": "Rejected",
+      "rejection_reason": "Position filled internally"
+    }
+order: 4000

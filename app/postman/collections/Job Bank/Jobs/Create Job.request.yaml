@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{base_url}}/api/jobs"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "role": "Data Engineer",
+      "company_name": "Acme Corp",
+      "application_status": "Applied",
+      "recruiter_name": "Jordan",
+      "recruiter_email": "jordan@acme.com"
+    }
+order: 2000

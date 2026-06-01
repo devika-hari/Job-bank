@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{base_url}}/api/interviews/{{interview_id}}/questions"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "question_text": "Explain idempotent Airflow tasks",
+      "notes": "Mention retries",
+      "tags": ["Airflow", "Python"]
+    }
+order: 1000
