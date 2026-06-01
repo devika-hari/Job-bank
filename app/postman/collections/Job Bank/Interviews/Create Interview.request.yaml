@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{base_url}}/api/jobs/{{job_id}}/interviews"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "round_number": 1,
+      "round_status": "Scheduled",
+      "interviewer_names": "Alex Lee"
+    }
+order: 2000

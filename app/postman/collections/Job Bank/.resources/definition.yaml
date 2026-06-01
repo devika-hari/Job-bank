@@ -1,0 +1,6 @@
+$kind: collection
+description: Postman collection for the Job Bank FastAPI backend. Set {{base_url}} to http://127.0.0.1:8000
+variables:
+  base_url: http://127.0.0.1:8000
+  job_id: "1"
+  interview_id: "1"

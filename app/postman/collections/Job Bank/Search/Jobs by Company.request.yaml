@@ -1,0 +1,10 @@
+$kind: http-request
+name: Jobs by Company
+url: "{{base_url}}/api/search/jobs/by-company?company=ABC"
+method: GET
+queryParams:
+  company: ABC
+body:
+  type: json
+  content: ""
+order: 1000
